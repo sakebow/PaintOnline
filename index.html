@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>draw</title>
+		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="./js/layui/css/layui.css" media="all">
+		<link rel="shortcut icon" href="favicon.ico" />
+		<script type="text/javascript" src="js/deeptech/ljx.js"></script>
+		<script src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/deeptech/deeptech.js"></script>
+		<script type="text/javascript" src="js/layer/layer.js"></script>
+	</head>
+
+	<body>
+		<!--上传图片文件进行填充-->
+		<div id="imgPreview">
+			<div id="prompt3">
+				<input type="file" id="file" class="filepath" accept="image/jpg,image/jpeg,image/png,image/PNG">
+				<!--当vaule值改变时执行changepic函数，规定上传的文件只能是图片-->
+			</div>
+		</div>
+		<!--顶部导航栏-->
+		<div id="top">
+			<div id="menu">
+				<ul>
+					<li>
+						<a onclick="ljx.util.saveCanvas()">保存</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.clearStorage()">清除缓存</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.saveImage()">导出</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.leftAlign()">左对齐</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.centerAlign()">居中对齐</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.rightAlign()">右对齐</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.getBack()">撤销</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.getFront()">反撤销</a>
+					</li>
+					<li>
+						<a onclick="ljx.util.filp()">对称</a>
+					</li>
+					<li>
+						<a target="_blank" href="操作手册.pdf">帮助</a>
+					</li>
+					<li>
+						<a target="_blank" href="图形学课程设计PPT最终稿.pdf">关于</a>
+					</li>
+					<li>
+						<a target="_blank" href="图形学课程设计报告.pdf">设计报告</a>
+					</li>
+				</ul>
+			</div>
+			<!--左侧工具栏-->
+			<div id="left">
+				<div class="tool" title="圆弧"><span></span></div>
+				<div class="tool" title="矩形"><span></span></div>
+				<div class="tool" title="曲线"><span></span></div>
+				<div class="tool" title="橡皮"><span></span></div>
+				<div class="tool" title="填充"><span></span></div>
+				<div class="tool" title="直线"><span></span></div>
+				<div class="tool" title="椭圆"><span></span></div>
+				<div class="tool" title="铅笔"><span></span></div>
+				<div class="tool" title="多边形"><span></span></div>
+				<div class="tool" title="裁剪"><span></span></div>
+				<div class="tool" title="文字"><span></span></div>
+				<div class="tool" title="图片"><span></span></div>
+				<div class="tool" title="圆角矩形"><span></span></div>
+				<div class="tool" title="图案填充"><span></span></div>
+				<div id="lineWeight">
+					<p class="selected" title="3"><span></span></p>
+					<p title="7"> <span></span></p>
+					<p title="11"> <span></span></p>
+					<p title="15"> <span></span></p>
+				</div>
+				<div id="lineDash">
+					<p class="selected" title="1"><span></span></p>
+					<p title="2"> <span></span></p>
+					<p title="3"> <span></span><span></span><span></span><span></span><span></span><span></span></p>
+					<p title="4"> <span></span><span></span><span></span><span></span><span></span><span></span></p>
+					<p title="5"> <span></span><span></span><span></span><span></span><span></span></p>
+					<p title="6"> <span></span></p>
+				</div>
+				<div id="lineHelp">
+					<p class="selected">对齐</p>
+				</div>
+				<div id="slideTest1">
+				</div>
+			</div>
+			<!--右侧画布-->
+			<div id="right">
+				<canvas id="lowc"></canvas>
+				<canvas id="c"></canvas>
+			</div>
+		</div>
+		<!--底部颜色选择-->
+		<div id="bottom">
+			<div id="colorPicker">
+				<div id="currentColor">
+					<span></span>
+				</div>
+				<div id="availableColor">
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<!-- <br> -->
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+					<div class="colors"> <span></span> </div>
+				</div>
+				<button type="button" id="print" class="bline btn btn-primary">绘制</button>
+				<button type="button" id="clear" class="bline btn btn-primary">清空</button>
+				<input type="text" id="info" class="info" readonly />
+			</div>
+		</div>
+	</body>
+	<script src="./js/layui/layui.js" charset="utf-8"></script>
+	<script src="./js/index.js"></script>
+	<script type="text/javascript">
+		window.onload = ljx.util.loadStorage;
+		let canvas_width = $('#right').innerWidth();
+		let canvas_height = $('#right').innerHeight();
+		document.getElementById('c').width = canvas_width;
+		document.getElementById('c').height = canvas_height;
+		var grids = [];
+		var xlines = [];
+		var ylines = [];
+		// 全局画布对象
+		var __canvas = new deeptech.Canvas('c', {
+			isDrawingMode: false
+		});
+		// 全局对象 - 画布元素栈
+		var __canvasStack = [];
+		// 全局对象 - 历史记录栈
+		var __historyStack = [];
+		// 全局对象 - 当前使用工具
+		var __currentTool = null;
+		// 全局对象 - 线宽
+		var __lineWidth = 3,
+			// 全局对象 - 水平轴线弧度
+			__roundX = 20,
+			// 全局对象 - 竖直轴线弧度
+			__roundY = 20;
+		// 全局对象 - 线色
+		var __color = '#000';
+		// 全局对象 - 填充色
+		var __fillColor = 'rgba(255, 255, 255, 0)';
+		// 初始画布情况
+		var __init = __canvas.toJSON();
+		__canvasStack.push(__init);
+		// 虚线线型
+		// 1 - 直线
+		// 2 - 线，线，线
+		// 3 - 线，点，线
+		// 4 - 线，点，点
+		// 5 - 线，线， 点
+		// 6 - 点，点，点
+		var __lineStyle = 1;
+		// 直线对齐辅助开关
+		var __lineHelp = true;
+		// 圆弧圆心角
+		var __startAngle = 0;
+		var __endAngle = Math.PI / 2;
+		// 点击选择工具并画图
+		$(".tool").click(function() {
+			__canvas.off('mouse:down');
+			__canvas.off('mouse:move');
+			__canvas.off('mouse:up');
+			__currentTool = $(this).attr('title');
+			// 获取被选中时的按钮元素的title属性
+			/* EDITOR - 邢文圣
+			 * SUMMARY - 上传图片并填入画布
+			 * DETAILS - 添加input[type = 'file']，点击工具栏的同时触发input的点击进行图片的选择
+			 * 			 再将图片转换成base64的形式传入src
+			 * */
+			if(__currentTool == '图片') {
+				$(this).removeClass('selected')
+				$('#file').click();
+				let result = null;
+				$('#file').change(function() {
+					let reads = new FileReader();
+					f = document.getElementById('file').files[0];
+					if(f == null) {
+						return;
+					}
+					reads.readAsDataURL(f);
+					reads.onload = function(e) {
+						result = this.result;
+						ljx.util.appendImg(result);
+					};
+					return result;
+				})
+			} else if(__currentTool == '图案填充') {
+				/* EDITOR - 邢文圣
+				 * SUMMARY - 上传图片并填入图源
+				 * DETAILS - 使用同上的input[type = 'file']，点击工具栏的同时触发input的点击进行图片的选择
+				 * 			 再将图片转换成base64的形式传入src
+				 * */
+				$(this).removeClass('selected')
+				$('#file').click();
+				let result = null;
+				$('#file').change(function() {
+					let reads = new FileReader();
+					f = document.getElementById('file').files[0];
+					if(f == null) {
+						return;
+					}
+					reads.readAsDataURL(f);
+					reads.onload = function(e) {
+						result = this.result;
+						ljx.util.fillImage(result);
+					};
+				})
+			}
+			// 图源对齐
+			ljx.util.align();
+			// 选择工具
+			if($(this).hasClass('selected')) {
+				if(__currentTool == '圆弧') {
+					bLine();
+				} else
+				if(__currentTool == '铅笔') {
+					// 铅笔功能 - 自由画线
+					// 其他所有功能在调用的时候都需要首先禁用铅笔功能
+					// 否则会在绘制的时候莫名其妙的出现铅笔轨迹
+					__canvas.isDrawingMode = true;
+				} else if(__currentTool == '多边形') {
+					// 多边形功能 - 随意点击生成点，并将点连起来成形
+					ljx.util.drawPolygon();
+					__canvas.isDrawingMode = false;
+					__canvasStack.push(__canvas.toJSON());
+					console.log(__canvasStack);
+				} else if(__currentTool == '曲线') {
+					curve();
+				} else {
+					// 其余的都在这通用函数里面
+					ljx.util.drawItem();
+					__canvas.isDrawingMode = false;
+				}
+				// 绘画过程中禁止框选
+				__canvas.selection = false;
+				return;
+			}
+			// 如果取消了点击，即未选择任何工具时，将当前工具（全局变量）置空
+			__currentTool = null;
+			// 此时允许框选
+			__canvas.selection = true;
+		});
+		// 点击颜色选择框的时候更新全局变量__color（线色）
+		$(".colors").click(function() {
+			__color = $("#currentColor span").css("background-color");
+		});
+		// 点击线宽选择框的时候更新全局变量__lineWidth（线宽）
+		$("#lineWeight p").click(function() {
+			__lineWidth = $(this).attr('title');
+			__canvas.freeDrawingBrush.width = __lineWidth;
+			__canvas.freeDrawingBrush.color = __color;
+		});
+		$("#lineDash p").click(function() {
+			console.log($(this).attr('title'))
+			switch($(this).attr('title')) {
+				// 1 - 直线
+				// 2 - [1, 1]
+				// 3 - [15, 5]
+				// 4 - [5, 15]
+				// 5 - [20, 20]
+				case '1':
+					__lineStyle = 1;
+					break;
+				case '2':
+					__lineStyle = [30, 10];
+					break;
+				case '3':
+					__lineStyle = [30, 10, 5, 10];
+					break;
+				case '4':
+					__lineStyle = [30, 10, 5, 10, 5, 10];
+					break;
+				case '5':
+					__lineStyle = [30, 10, 30, 10, 5, 10];
+					break;
+				case '6':
+					__lineStyle = [5, 10, 5, 10];
+					break;
+				default:
+					break;
+			}
+			ljx.util.drawLine();
+		});
+		/* 快捷键集合
+		 *	1 - ctrl + c 复制图源或者图元集合
+		 *  2 - ctrl + v 粘贴图源或者图元集合
+		 * 	3 - ctrl + shift + Q - 清空画布
+		 *  4 - back space || delete - 删除图源或者图元集合
+		 *  5 - ctrl + z 撤销
+		 *  6 - ctrl + shift + z 恢复
+		 * 	7 - ctrl + shift + s 保存
+		 * 	8 - ctrl + shift + x 清空缓存
+		 * 	9 - ctrl + shift + e 导出图片
+		 * */
+		window.document.onkeydown = function(keyEvent) {
+			let ctrlKey = keyEvent.ctrlKey;
+			let shiftKey = keyEvent.shiftKey;
+			let keyCode = keyEvent.keyCode || keyEvent.charCode;
+			if(ctrlKey && shiftKey && keyCode == 81) {
+				ljx.util.clearCanvas();
+			} else if(ctrlKey && keyCode == 67) {
+				Copy();
+			} else if(ctrlKey && keyCode == 86) {
+				Paste();
+			} else if(keyCode == 8 || keyCode == 46) {
+				ljx.util.eraser();
+			} else if(ctrlKey && keyCode == 90 && !shiftKey) {
+				ljx.util.getBack();
+			} else if(ctrlKey && shiftKey && keyCode == 90) {
+				ljx.util.getFront();
+			} else if(ctrlKey && keyCode == 83 && shiftKey) {
+				ljx.util.saveCanvas();
+			} else if(ctrlKey && keyCode == 88 && shiftKey) {
+				ljx.util.clearStorage();
+			} else if(ctrlKey && keyCode == 69 && shiftKey) {
+				ljx.util.saveImage();
+			}
+		}
+		__canvas.on('object:modified', function() {
+			__canvasStack.push(__canvas.toJSON());
+		});
+	</script>
+
+	<script type="text/javascript" src="js/deeptech/curve.js"></script>
+	<script src="js/uploadPic.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/deeptech/copy_paste.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/deeptech/line.js" type="text/javascript" charset="utf-8"></script>
+
+</html>

@@ -114,4 +114,41 @@ canvas.on('object:moving', function(movingEvent){
 
 总结：修改坐标的时候永远是以各种各样的事件属性进行修改，而不是对象的属性。
 
-   3. 有待更新
+   3. 事件终止<br />
+   当我们在使用绘图工具的时候，一般都是直接切换或者会重复点击。这个时候终止上次的事件就是非常必要的。如果不终止，当我点了**橡皮擦**功能了之后又去点**填充**功能的时候，由于橡皮擦事件**并未正常终止**，而是**一直存活在生命周期中**，就会出现**本来是想填充结果把他擦掉了**的现象。原生js中就是强行将事件置为*null*来终止，fabricjs中则有*canvas.off*方法来取消监听。<br />
+   下面我们看一段代码：
+   ```javascript
+$(".tool").click(function() {
+    __canvas.off('mouse:down');
+    __canvas.off('mouse:move');
+	__canvas.off('mouse:up');
+    // 获取被选中时的按钮元素的title属性
+    if($(this).hasClass('selected')) {
+	    __currentTool = $(this).attr('title');
+	    if(__currentTool == '铅笔') {
+	  	    // 铅笔功能 - 自由画线
+	   	    // 其他所有功能在调用的时候都需要首先禁用铅笔功能
+	   	    // 否则会在绘制的时候莫名其妙的出现铅笔轨迹
+	   	    __canvas.isDrawingMode = true;
+	    } else if(__currentTool == '多边形') {
+		    	// 多边形功能 - 随意点击生成点，并将点连起来成形
+              // 需要监听mouse:down事件和mouse:move事件
+		    ljx.util.drawPolygon();
+		    __canvas.isDrawingMode = false;
+           } else {
+               // 其余的都在这通用函数里面
+               // 需要监听mouse:down事件和mouse:move事件
+		    ljx.util.drawItem();
+		    __canvas.isDrawingMode = false;
+	    }
+	    // 绘画过程中禁止框选
+	    __canvas.selection = false;
+        // 如果选择了绘画工具，绘完了立马退出
+	    return;
+    }
+	// 如果取消了点击，即未选择任何工具时，将当前工具（全局变量）置空
+	__currentTool = null;
+	// 此时允许框选
+	__canvas.selection = true;
+});
+   ```
